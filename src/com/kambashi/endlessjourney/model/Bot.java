@@ -11,8 +11,8 @@ public class Bot {
 	private int x; // the X coordinate
 	private int y; // the Y coordinate
 	private boolean touched; // if droid is touched/picked up
-	
-	private Speed speed;	// the speed with its directions
+
+	private Speed speed; // the speed with its directions
 
 	public Bot(Bitmap bitmap, int x, int y) {
 		this.bitmap = bitmap;
@@ -52,7 +52,7 @@ public class Bot {
 	public void setTouched(boolean touched) {
 		this.touched = touched;
 	}
-	
+
 	public Speed getSpeed() {
 		return speed;
 	}
@@ -80,7 +80,7 @@ public class Bot {
 			setTouched(false);
 		}
 	}
-	
+
 	public void update() {
 		if (!touched) {
 			x += (speed.getXv() * speed.getxDirection());

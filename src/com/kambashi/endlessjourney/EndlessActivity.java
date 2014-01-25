@@ -8,17 +8,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class EndlessActivity extends Activity {
-	
+
 	private static final String TAG = EndlessActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// requesting to turn the title off
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// making it full screen
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// set our MainGamePanel as the View
 		setContentView(new MainGamePanel(this));
 		Log.d(TAG, "View added");
@@ -30,13 +31,13 @@ public class EndlessActivity extends Activity {
 		getMenuInflater().inflate(R.menu.endless, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		Log.d(TAG, "Destroying...");
 		super.onDestroy();
 	}
-	
+
 	@Override
 	protected void onStop() {
 		Log.d(TAG, "Stopping...");
