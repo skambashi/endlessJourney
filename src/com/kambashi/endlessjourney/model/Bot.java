@@ -3,17 +3,22 @@ package com.kambashi.endlessjourney.model;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.kambashi.endlessjourney.model.components.Speed;
+
 public class Bot {
 
 	private Bitmap bitmap; // the actual bitmap
 	private int x; // the X coordinate
 	private int y; // the Y coordinate
 	private boolean touched; // if droid is touched/picked up
+	
+	private Speed speed;	// the speed with its directions
 
 	public Bot(Bitmap bitmap, int x, int y) {
 		this.bitmap = bitmap;
 		this.x = x;
 		this.y = y;
+		this.speed = new Speed();
 	}
 
 	public Bitmap getBitmap() {
@@ -47,6 +52,14 @@ public class Bot {
 	public void setTouched(boolean touched) {
 		this.touched = touched;
 	}
+	
+	public Speed getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Speed speed) {
+		this.speed = speed;
+	}
 
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2),
@@ -66,6 +79,12 @@ public class Bot {
 		} else {
 			setTouched(false);
 		}
-
+	}
+	
+	public void update() {
+		if (!touched) {
+			x += (speed.getXv() * speed.getxDirection());
+			y += (speed.getYv() * speed.getyDirection());
+		}
 	}
 }

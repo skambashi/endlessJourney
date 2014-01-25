@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.kambashi.endlessjourney.model.Bot;
+import com.kambashi.endlessjourney.model.components.Speed;
 
 public class MainGamePanel extends SurfaceView implements
 		SurfaceHolder.Callback {
@@ -25,9 +26,9 @@ public class MainGamePanel extends SurfaceView implements
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
 
-		// create droid and load bitmap
+		// create bot and load bitmap
 		bot = new Bot(BitmapFactory.decodeResource(getResources(),
-				R.drawable.droid_1), 50, 50);
+				R.drawable.bot_1), 50, 50);
 
 		// create the game loop thread
 		thread = new MainThread(getHolder(), this);
@@ -69,7 +70,7 @@ public class MainGamePanel extends SurfaceView implements
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			// delegating event handling to the droid
+			// delegating event handling to the bot
 			bot.handleActionDown((int) event.getX(), (int) event.getY());
 
 			// check if in the lower part of the screen we exit
@@ -83,7 +84,7 @@ public class MainGamePanel extends SurfaceView implements
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			// the gestures
 			if (bot.isTouched()) {
-				// the droid was picked up and is being dragged
+				// the bot was picked up and is being dragged
 				bot.setX((int) event.getX());
 				bot.setY((int) event.getY());
 			}
@@ -97,10 +98,34 @@ public class MainGamePanel extends SurfaceView implements
 		return true;
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void render(Canvas canvas) {
 		// fills the canvas with black
 		canvas.drawColor(Color.BLACK);
 		bot.draw(canvas);
+	}
+
+	public void update() {
+		// check collision with right wall if heading right
+		if (bot.getSpeed().getxDirection() == Speed.DIRECTION_RIGHT
+				&& bot.getX() + bot.getBitmap().getWidth() / 2 >= getWidth()) {
+			bot.getSpeed().toggleXDirection();
+		}
+		// check collision with left wall if heading left
+		if (bot.getSpeed().getxDirection() == Speed.DIRECTION_LEFT
+				&& bot.getX() - bot.getBitmap().getWidth() / 2 <= 0) {
+			bot.getSpeed().toggleXDirection();
+		}
+		// check collision with bottom wall if heading down
+		if (bot.getSpeed().getyDirection() == Speed.DIRECTION_DOWN
+				&& bot.getY() + bot.getBitmap().getHeight() / 2 >= getHeight()) {
+			bot.getSpeed().toggleYDirection();
+		}
+		// check collision with top wall if heading up
+		if (bot.getSpeed().getyDirection() == Speed.DIRECTION_UP
+				&& bot.getY() - bot.getBitmap().getHeight() / 2 <= 0) {
+			bot.getSpeed().toggleYDirection();
+		}
+		// Update the lone bot
+		bot.update();
 	}
 }
